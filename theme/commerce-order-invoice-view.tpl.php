@@ -45,21 +45,19 @@
         <table width="95%" border="0" cellspacing="0" cellpadding="1" align="center" style="border:1px solid #BEBFB9;">
           <tbody>
             <tr>
-              <td style="padding: 8px 10px;"><?php print '<strong>' . t('Account No') . '</strong> ' .  $invoice_info['order_uid']; ?></td>
-              <td style="padding: 8px 10px;"><?php print '<strong>' . t('Web Order No') . '</strong> ' .  $invoice_info['order_number']; ?></td>
+              <td style="padding: 8px 10px;"><?php print '<strong>' . t('Account No') . ':</strong> ' .  $info['order_uid']; ?></td>
+              <td style="padding: 8px 10px;"><?php print '<strong>' . t('Web Order No') . ':</strong> ' .  $info['order_number']; ?></td>
             </tr>
             <tr>
-              <td style="padding: 8px 10px;"><?php print '<strong>' . t('Order Date') . '</strong> ' .  date('j F, Y', $invoice_info['order_created']); ?></td>
-              <td style="padding: 8px 10px;"><?php print '<strong>' . t('Email Address') . '</strong> ' .  $invoice_info['order_mail']; ?></td>
+              <td style="padding: 8px 10px;"><?php print '<strong>' . t('Order Date') . ':</strong> ' .  date('j F, Y', $info['order_created']); ?></td>
+              <td style="padding: 8px 10px;"><?php print '<strong>' . t('Email Address') . ':</strong> ' .  $info['order_mail']; ?></td>
             </tr>
             <tr>
+              <td style="padding: 8px 10px;"><?php print '<strong>' . t('Billing Address') . ':</strong> ' .  $info['customer_billing']; ?></td>
               <td style="padding: 8px 10px;">
-                <strong><?php print t('Billing Address'); ?></strong><br/>
-                <?php print $invoice_info['customer_billing']; ?>
-              </td>
-              <td style="padding: 8px 10px;">
-                <strong><?php print t('Shipping Address'); ?></strong><br/>
-                <?php print $invoice_info['customer_shipping']; ?>
+                <?php if(isset($info['customer_shipping']) && !empty($info['customer_shipping'])): ?>
+                  <?php print '<strong>' . t('Shipping Address') . ':</strong> ' .  $info['customer_shipping']['address']; ?>
+                <?php endif; ?>
               </td>
             </tr>
           </tbody>
@@ -71,15 +69,10 @@
         <table class="products" width="95%" border="0" cellspacing="0" cellpadding="1" align="center" style="border:1px solid #BEBFB9;">
           <tbody>
             <tr>
-              <td style="padding: 8px 10px;" colspan="2">
-                <?php print $invoice_info['line_items']; ?>
-              </td>
+              <td style="padding: 8px 10px;"><?php print $info['line_items']; ?></td>
             </tr>
             <tr>
-              <td></td>
-              <td width="20%">
-                <?php print $invoice_info['order_total']; ?>
-              </td>
+              <td style="padding: 8px 10px;"><?php print $info['order_total'] ?></td>
             </tr>
           </tbody>
         </table>

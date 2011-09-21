@@ -1,10 +1,54 @@
-
 .field-name-commerce-order-total .commerce-price-formatted-components {
-  width: 33%;
-  margin-left: auto;
+  width:33%;
+  margin-left:auto;
 }
 
 .field-name-commerce-order-total .commerce-price-formatted-components tr.component-type-commerce-price-formatted-amount {
-  background-color: #FF0000;
-  font-weight: bold;
+  background-color:red;
+  font-weight:700;
+}
+
+.products ul {
+  display:none;
+}
+
+tr.odd {
+  background:none repeat scroll 0 0 #FFF;
+}
+
+tr.even {
+  background:none repeat scroll 0 0 #F3F4EE;
+  border-color:#BEBFB9;
+  border-style:solid;
+  border-width:0 1px;
+}
+
+.products table {
+  width:100%;
+  border-spacing:0;
+  font-size:12px;
+}
+
+.products table th {
+  background:#000;
+  color:#FFF;
+  text-align:left;
+  text-transform:uppercase;
+  font-weight:700;
+  border:0;
+  padding:0;
+}
+
+.products table th,.products table td {
+  padding:2px 5px;
+}
+
+.views-field-commerce-total,.component-total {
+  width:100px !important;
+  text-align:right;
+}
+
+.products table.commerce-price-formatted-components {
+  width:200px;
+  float:right;
 }

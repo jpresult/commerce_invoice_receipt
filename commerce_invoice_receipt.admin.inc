@@ -40,7 +40,7 @@ function commerce_invoice_receipt_mail_form_validate($form, &$form_state) {
 }
 
 /**
- * @see commerce_invoice_receipt_mail_forme_form()
+ * @see commerce_invoice_receipt_mail_form()
  */
 function commerce_invoice_receipt_mail_form_submit($form, &$form_state) {
   $order = commerce_order_load($form_state['values']['order_id']);
@@ -65,6 +65,51 @@ function commerce_invoice_receipt_mail_form_submit($form, &$form_state) {
     $message = t('Invoice e-mailed to @email.', array('@email' => $recipient));
     drupal_set_message($message);
   }
+}
+
+/**
+ * Generate an array for rendering all the invoice info.
+ */
+function _commerce_invoice_receipt_get_invoice_info($order, $build) {
+  $info = array(
+    'order_uid' => $order->uid,
+    'order_created' => $order->created,
+    'order_number' => $order->order_number,
+    'order_mail' => $order->mail,
+  );
+
+  if (isset($order->commerce_order_total['und']['0']['data']['components'][1]['price']['data']['tax_rate'])) {
+    $info['tax'] = array(
+      'amount' => $order->commerce_order_total['und']['0']['data']['components'][1]['price']['amount'],
+      'type' => $order->commerce_order_total['und']['0']['data']['components'][1]['price']['data']['tax_rate']['type'],
+      'currency' => $order->commerce_order_total['und']['0']['data']['components'][1]['price']['currency_code'],
+    );
+  }
+  if (isset($build['commerce_order'][$order->order_number]['commerce_customer_shipping']['#object']->commerce_order_total['und'][0]['data']['components'][2])) {
+    $info['customer_shipping'] = array(
+      'address' => $build['commerce_order'][$order->order_number]['commerce_customer_shipping'][0]['#markup'],
+      'amount' => $build['commerce_order'][$order->order_number]['commerce_customer_shipping']['#object']->commerce_order_total['und'][0]['data']['components'][2]['price']['amount'],
+      'currency' => $build['commerce_order'][$order->order_number]['commerce_customer_shipping']['#object']->commerce_order_total['und'][0]['data']['components'][2]['price']['currency_code'],
+    );
+  }
+  elseif(isset($build['commerce_order'][$order->order_number]['commerce_customer_shipping'])) {
+    $info['customer_shipping'] = array(
+      'address' => $build['commerce_order'][$order->order_number]['commerce_customer_shipping'][0]['#markup'],
+      'amount' => 0,
+      'currency' => $build['commerce_order'][$order->order_number]['commerce_customer_shipping']['#object']->commerce_order_total['und'][0]['data']['components'][0]['price']['currency_code'],
+    );
+  }
+  if (isset($build['commerce_order'][$order->order_number]['commerce_customer_billing'][0]['#markup'])) {
+    $info['customer_billing'] = $build['commerce_order'][$order->order_number]['commerce_customer_billing'][0]['#markup'];
+  }
+  if (isset($build['commerce_order'][$order->order_number]['commerce_line_items'])) {
+    $info['line_items'] = $build['commerce_order'][$order->order_number]['commerce_line_items'][0]['#markup'];
+  }
+  if (isset($build['commerce_order'][$order->order_number]['commerce_order_total'])) {
+    $info['order_total'] = $build['commerce_order'][$order->order_number]['commerce_order_total'][0]['#markup'];
+  }
+
+  return $info;
 }
 
 /**
@@ -94,34 +139,35 @@ function _commerce_invoice_receipt_mail_recipient_language($uid) {
   return $lang_object;
 }
 
-/**
- * Generate an array for rendering all the invoice info.
+/*
+ * Invoice Rules Excute function
  */
-function _commerce_invoice_receipt_get_invoice_info($order, $build) {
-  $info = array(
-    'order_uid' => $order->uid,
-    'order_created' => $order->created,
-    'order_number' => $order->order_number,
-    'order_mail' => $order->mail,
+function commerce_invoice_receipt_send_invoice($order, $settings) {
+  $recipients = array();
+  $addresses = $settings['addresses'];
+
+  foreach (explode("\n", $addresses) as $address) {
+    $recipients[] = trim($address);
+  }
+
+  $params = array(
+    'order' => $order,
+    'subject' => $settings['subject'],
   );
-  
-  if (isset($build['commerce_order'][$order->order_number]['commerce_customer_billing'])) {
-    $info['customer_billing'] = $build['commerce_order'][$order->order_number]['commerce_customer_billing'][0]['#markup'];
+  $from_email = $settings['from'];
+
+  foreach($recipients as $recipient) {
+    variable_set('mail_system', array('default-system' => 'DefaultMailSystem', 'commerce_invoice_receipt' => 'InvoiceMailSystem'));
+    $sent = drupal_mail('commerce_invoice_receipt', 'invoice', $recipient, _commerce_invoice_receipt_mail_recipient_language($order->uid), $params, $from_email);
+
+    if (!$sent) {
+      drupal_set_message(t('E-mail failed.'));
+    }
+    else {
+      $message = t('Invoice e-mailed to @email.', array('@email' => $recipient));
+      drupal_set_message($message);
+    }
   }
-  
-  if (isset($build['commerce_order'][$order->order_number]['commerce_customer_shipping'])) {
-    $info['customer_shipping'] = $build['commerce_order'][$order->order_number]['commerce_customer_shipping'][0]['#markup'];
-  }
-  
-  if (isset($build['commerce_order'][$order->order_number]['commerce_line_items'])) {
-    $info['line_items'] = $build['commerce_order'][$order->order_number]['commerce_line_items'][0]['#markup'];
-  }
-  
-  if (isset($build['commerce_order'][$order->order_number]['commerce_order_total'])) {
-    $info['order_total'] = $build['commerce_order'][$order->order_number]['commerce_order_total'][0]['#markup'];
-  }
-  
-  return $info;
 }
 
 /**
