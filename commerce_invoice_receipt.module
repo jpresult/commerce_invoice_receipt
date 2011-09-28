@@ -1,76 +1,53 @@
 <?php
+
 /**
  * Implements hook_menu().
  */
 function commerce_invoice_receipt_menu() {
   $items = array();
   
-  $items['admin/commerce/orders/%commerce_order/invoice'] = array(
-    'title' => 'Invoice',
-    'page callback' => 'commerce_invoice_receipt_view',
-    'page arguments' => array(3),
-    'access callback' => 'commerce_order_access',
-    'access arguments' => array('view', 3),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 10,
-    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-    'file' => 'commerce_invoice_receipt.admin.inc'
-  );
-
-  $items['admin/commerce/orders/%commerce_order/invoice/view'] = array(
-    'title' => 'View Invoice',
-    'page callback' => 'commerce_invoice_receipt_view',
-    'page arguments' => array(3),
-    'access callback' => 'commerce_order_access',
-    'access arguments' => array('view', 3),
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'parent' => 'admin/commerce/orders/%commerce_order/invoice',
-    'weight' => 0,
-    'file' => 'commerce_invoice_receipt.admin.inc',
-  );
-
-  $items['admin/commerce/orders/%commerce_order/invoice/print'] = array(
-    'title' => 'Printable Invoice',
+  $items['admin/commerce/orders/%commerce_order/view/print'] = array(
+    'title' => 'Print',
     'page callback' => 'commerce_invoice_receipt_view_print',
     'page arguments' => array(3),
     'access callback' => 'commerce_order_access',
     'access arguments' => array('view', 3),
     'type' => MENU_LOCAL_TASK,
     'weight' => 1,
-    'parent' => 'admin/commerce/orders/%commerce_order/invoice',
+    'parent' => 'admin/commerce/orders/%commerce_order',
     'file' => 'commerce_invoice_receipt.admin.inc',
   );
-
-  $items['admin/commerce/orders/%commerce_order/invoice/mail'] = array(
-    'title' => 'Mail Invoice',
+  
+  $items['admin/commerce/orders/%commerce_order/view/mail'] = array(
+    'title' => 'Email',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('commerce_invoice_receipt_mail_form', 3),
     'access callback' => 'commerce_order_access',
     'access arguments' => array('view', 3),
     'type' => MENU_LOCAL_TASK,
     'weight' => 2,
-    'parent' => 'admin/commerce/orders/%commerce_order/invoice',
+    'parent' => 'admin/commerce/orders/%commerce_order',
     'file' => 'commerce_invoice_receipt.admin.inc',
   );
   
+  $items['user/%user/orders/%commerce_order/print'] = array(
+    'title' => 'Printable Invoice',
+    'page callback' => 'commerce_invoice_receipt_view_print',
+    'page arguments' => array(3),
+    'access callback' => 'commerce_order_customer_order_view_access',
+    'access arguments' => array(3),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+    'file' => 'commerce_invoice_receipt.admin.inc',
+  );
+  
+  $items['user/%user/orders/%commerce_order/view'] = array(
+    'title' => 'View',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 1,
+  );
+  
   return $items;
-}
-
-/**
- * Generate an array for rendering the given order.
- *
- * @param $order
- *   A fully loaded order object.
- * @param $view_mode
- *   The view mode for displaying the order, 'invoice'.
- *
- * @return
- *   An array as expected by drupal_render().
- */
-function commerce_invoice_receipt_view($order, $view_mode = 'invoice', $breadcrumb = TRUE) {
-  drupal_add_css(drupal_get_path('module', 'commerce_invoice_receipt') . '/theme/commerce_invoice_receipt.css');
-
-  return entity_view('commerce_order', array($order->order_id => $order), $view_mode, NULL, TRUE);
 }
 
 function commerce_invoice_receipt_view_print($order, $view_mode = 'invoice', $breadcrumb = TRUE) {
@@ -127,7 +104,7 @@ function commerce_invoice_receipt_mail($key, &$message, $params) {
     'langcode' => $langcode,
     'context' => '',
   );
-
+  
   switch($key) {
     // Setup an e-mailed invoice.
     case 'invoice':
@@ -143,7 +120,7 @@ function commerce_invoice_receipt_mail($key, &$message, $params) {
       );
       $html = drupal_get_css($styles);
       
-      $build = entity_view('commerce_order', array($params['order']->order_id => $params['order']), 'administrator', NULL, TRUE);
+      $build = entity_view('commerce_order', array($params['order']->order_id => $params['order']), 'invoice', NULL, TRUE);
       $invoice_info = _commerce_invoice_receipt_get_invoice_info($params['order'], $build);
       
       $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed;';
@@ -160,86 +137,93 @@ function commerce_invoice_receipt_mail($key, &$message, $params) {
  * Implements hook_rules_action_info().
  */
 function commerce_invoice_receipt_rules_action_info() {
-  $actions = array();
-
-  $actions['commerce_invoice_receipt_send_invoice'] = array(
-    'label' => t('Sends the invoice email'),
-    'arguments' => array(
-      'commerce_order' => array(
-        'type' => 'commerce_order',
-        'label' => t('Order'),
+  return array(
+    'commerce_invoice_receipt_mail' => array(
+      'label' => t('Send invoice receipt email'),
+      'group' => t('Commerce Order'),
+      'parameter' => array(
+        'commerce_order' => array(
+          'type' => 'commerce_order',
+          'label' => t('Order'),
+          'description' => t('The order whose line items should be checked for the specified product. If the specified order does not exist, the comparison will act as if it is against a quantity of 0.'),
+        ),
+        'to' => array(
+          'type' => 'text',
+          'label' => t('To'),
+          'description' => t('The e-mail address or addresses where the message will be sent to. The formatting of this string must comply with RFC 2822. Separate multiple addresses with a comma.'),
+          'default value' => '[commerce-order:owner] <[commerce-order:mail]>',
+        ),
+        'subject' => array(
+          'type' => 'text',
+          'label' => t('Subject'),
+          'description' => t("The mail's subject."),
+          'default value' => t("!site_name: Order #!order_id", array('!site_name' => '[site:name]', '!order_id' => '[commerce-order:order-id]')),
+        ),
+        'from' => array(
+          'type' => 'text',
+          'label' => t('From'),
+          'description' => t("The mail's from address. Leave it empty to use the site-wide configured address."),
+          'optional' => TRUE,
+          'default value' => '[site:name] <[site:mail]>',
+        ),
       ),
-      'invoice_mail_settings' => array(
-        'type' => 'commerce_invoice_receipt_settings',
-        'restriction' => 'input',
-        'label' => t('Invoice mail settings'),
+      'callbacks' => array(
+        'execute' => 'commerce_invoice_receipt_action_mail',
       ),
     ),
-    'group' => t('Commerce Order'),
   );
-
-  return $actions;
 }
 
-/**
- * Implements hook_rules_file_info().
- */
-function commerce_invoice_receipt_rules_file_info() {
-  return array('commerce_invoice_receipt.admin');
-}
-
-/**
- * Implements hook_rules_data_info().
- */
-function commerce_invoice_receipt_rules_data_info() {
-  $data['commerce_invoice_receipt_settings'] = array(
-      'label' => t('Invoice mail settings'),
-      'ui class' => 'RulesDataUIInvoiceSettings',
+function commerce_invoice_receipt_action_mail($order, $to, $subject, $from = NULL) {
+  $to = str_replace(array("\r", "\n"), '', $to);
+  $from = !empty($from) ? str_replace(array("\r", "\n"), '', $from) : NULL;
+  
+  $recipients = explode(',', $to);
+  
+  $params = array(
+    'subject' => $subject,
+    'order' => $order,
   );
-  return $data;
-}
-
-/**
- * This class is the implementation of the form for the e-mail invoice send action.
- */
-class RulesDataUIInvoiceSettings extends RulesDataUI implements RulesDataDirectInputFormInterface {
-  public static function getDefaultMode() {
-    return 'input';
-  }
-
-  public static function inputForm($name, $info, $settings, RulesPlugin $element) {
-
-    $form[$name]['from'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Sender'),
-      '#default_value' => isset($settings['invoice_mail_settings']['from']) ? $settings['invoice_mail_settings']['from'] : variable_get('site_mail', ''),
-      '#description' => t('The "From" address.'),
-      '#required' => TRUE,
-    );
+  
+  $account = user_load($order->uid);
+  $language = user_preferred_language($account);
+  
+  foreach ($recipients as $recipient) {
+    if($recipient == '') continue;
+    $message = drupal_mail('commerce_invoice_receipt', 'invoice', $recipient, $language, $params, $from);
     
-    $form[$name]['addresses'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Recipients'),
-      '#default_value' => isset($settings['invoice_mail_settings']['addresses']) ? $settings['invoice_mail_settings']['addresses'] : '',
-      '#description' => t('Enter the email addresses to receive the notifications, one on each line. You may use order tokens for dynamic email addresses.'),
-      '#required' => TRUE,
-    );
-
-    $langcode = isset($message['language']) ? $message['language']->language : NULL;
-    $options = array(
-      'langcode' => $langcode,
-      'context' => '',
-    );
-    $form[$name]['subject'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Subject'),
-      '#default_value' => isset($settings['invoice_mail_settings']['subject']) ? $settings['invoice_mail_settings']['subject'] : t('Your Order Invoice', array(), $options),
-      '#required' => TRUE,
-    );
-    return $form;
+    if ($message['result']) {
+      watchdog('rules', 'Successfully sent email to %recipient', array('%recipient' => $recipient));
+    }
   }
+}
 
-  public static function render($value) {
-    return array();
+/**
+ * Generate an array for rendering all the invoice info.
+ */
+function _commerce_invoice_receipt_get_invoice_info($order, $build) {
+  $info = array(
+    'order_uid' => $order->uid,
+    'order_created' => $order->created,
+    'order_number' => $order->order_number,
+    'order_mail' => $order->mail,
+  );
+  
+  if(isset($build['commerce_order'][$order->order_number]['commerce_customer_shipping'])) {
+    $info['customer_shipping'] = $build['commerce_order'][$order->order_number]['commerce_customer_shipping'][0]['#markup'];
   }
+  
+  if (isset($build['commerce_order'][$order->order_number]['commerce_customer_billing'][0]['#markup'])) {
+    $info['customer_billing'] = $build['commerce_order'][$order->order_number]['commerce_customer_billing'][0]['#markup'];
+  }
+  
+  if (isset($build['commerce_order'][$order->order_number]['commerce_line_items'])) {
+    $info['line_items'] = $build['commerce_order'][$order->order_number]['commerce_line_items'][0]['#markup'];
+  }
+  
+  if (isset($build['commerce_order'][$order->order_number]['commerce_order_total'])) {
+    $info['order_total'] = $build['commerce_order'][$order->order_number]['commerce_order_total'][0]['#markup'];
+  }
+  
+  return $info;
 }

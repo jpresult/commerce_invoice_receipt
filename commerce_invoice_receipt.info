@@ -1,6 +1,9 @@
-name = "Invoice / Receipt"
-description = "Provides a new invoice / receipt display for Drupal commerce orders. Which can be e-mailed if needed."
+name = "Invoice Receipt"
+description = "Provides a printable invoice receipt along with HTML mailing rules."
 package = "Commerce (contrib)"
 dependencies[] = commerce
 dependencies[] = commerce_order
+dependencies[] = emogrifier
 core = 7.x
+
+files[] = commerce_invoice_receipt.admin.inc
