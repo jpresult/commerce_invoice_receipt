@@ -209,20 +209,20 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
     'order_mail' => $order->mail,
   );
   
-  if(isset($build['commerce_order'][$order->order_number]['commerce_customer_shipping'])) {
-    $info['customer_shipping'] = $build['commerce_order'][$order->order_number]['commerce_customer_shipping'][0]['#markup'];
+  if(isset($build['commerce_order'][$order->order_id]['commerce_customer_shipping'])) {
+    $info['customer_shipping'] = $build['commerce_order'][$order->order_id]['commerce_customer_shipping'][0]['#markup'];
   }
   
-  if (isset($build['commerce_order'][$order->order_number]['commerce_customer_billing'][0]['#markup'])) {
-    $info['customer_billing'] = $build['commerce_order'][$order->order_number]['commerce_customer_billing'][0]['#markup'];
+  if (isset($build['commerce_order'][$order->order_id]['commerce_customer_billing'][0]['#markup'])) {
+    $info['customer_billing'] = $build['commerce_order'][$order->order_id]['commerce_customer_billing'][0]['#markup'];
   }
   
-  if (isset($build['commerce_order'][$order->order_number]['commerce_line_items'])) {
-    $info['line_items'] = $build['commerce_order'][$order->order_number]['commerce_line_items'][0]['#markup'];
+  if (isset($build['commerce_order'][$order->order_id]['commerce_line_items'])) {
+    $info['line_items'] = $build['commerce_order'][$order->order_id]['commerce_line_items'][0]['#markup'];
   }
   
-  if (isset($build['commerce_order'][$order->order_number]['commerce_order_total'])) {
-    $info['order_total'] = $build['commerce_order'][$order->order_number]['commerce_order_total'][0]['#markup'];
+  if (isset($build['commerce_order'][$order->order_id]['commerce_order_total'])) {
+    $info['order_total'] = $build['commerce_order'][$order->order_id]['commerce_order_total'][0]['#markup'];
   }
   
   return $info;
