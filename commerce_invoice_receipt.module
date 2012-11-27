@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Provides a printable invoice receipt along with HTML mailing rules.
+ */
+
+/**
  * Implements hook_menu().
  */
 function commerce_invoice_receipt_menu() {
