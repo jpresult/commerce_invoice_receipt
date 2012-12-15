@@ -5,6 +5,7 @@ CONTENTS OF THIS FILE
  * Installation
  * Known issues
  * Support
+ * Troubleshooting
  * Sponsorship
 
 
