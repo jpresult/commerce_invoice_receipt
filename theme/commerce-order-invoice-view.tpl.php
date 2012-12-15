@@ -22,7 +22,7 @@
               <td>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family: verdana, arial, helvetica; font-size: 11px;">
                   <tr>
-                    <th colspan="2"><?php print t('Order Summary'); ?></b></th>
+                    <th colspan="2"><?php print t('Order Summary'); ?></th>
                   </tr>
                   <tr>
                     <td colspan="2">
