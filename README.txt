@@ -43,6 +43,12 @@ KNOWN ISSUES
  * None
 
 
+TROUBLESHOOTING
+---------------
+
+1. Emails being sent out as plain text: 
+   Set the site-wide default to HTMLMailSystem
+ 
 SUPPORT
 -------
 
