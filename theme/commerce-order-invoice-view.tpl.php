@@ -26,7 +26,7 @@
                   </tr>
                   <tr>
                     <td colspan="2">
-                      
+
                       <table class="details" width="100%" cellspacing="0" cellpadding="0" style="font-family: verdana, arial, helvetica; font-size: 1em;">
                         <tr>
                           <td valign="top" width="50%">
@@ -36,7 +36,7 @@
                             <b><?php print t('Order Date:'); ?></b> <?php print date('j F, Y', $info['order_created']); ?><br/>
                             <br/>
                             <b><?php print t('Billing Address:'); ?></b><br />
-                            <?php print $info['customer_billing']; ?><br />
+                            <?php print isset($info['customer_billing']) ? $info['customer_billing'] : ''; ?><br />
                           </td>
                           <td valign="top" width="50%">
                             <br/>
@@ -45,11 +45,11 @@
                             <b><?php print t('Email Address:'); ?></b> <?php print $info['order_mail']; ?><br/>
                             <br/>
                             <b><?php print t('Shipping Address:'); ?></b><br />
-                            <?php print $info['customer_shipping']; ?><br />
+                            <?php print isset($info['customer_shipping']) ? $info['customer_shipping'] : ''; ?><br />
                           </td>
                         </tr>
                       </table>
-                      
+
                     </td>
                   </tr>
                 </table>
@@ -60,10 +60,10 @@
                 <table class="products" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="font-family: verdana, arial, helvetica; font-size: 11px;">
                   <tbody>
                     <tr>
-                      <td class="line-items"><?php print $info['line_items']; ?></td>
+                      <td class="line-items"><?php print isset($info['line_items']) ? $info['line_items'] : ''; ?></td>
                     </tr>
                     <tr>
-                      <td><?php print $info['order_total'] ?></td>
+                      <td><?php print isset($info['order_total']) ? $info['order_total'] : ''; ?></td>
                     </tr>
                   </tbody>
                 </table>
