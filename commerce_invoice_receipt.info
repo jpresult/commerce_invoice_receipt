@@ -6,4 +6,4 @@ dependencies[] = commerce_order
 dependencies[] = emogrifier
 core = 7.x
 
-files[] = commerce_invoice_receipt.admin.inc
+files[] = includes/commerce_invoice_receipt.admin.inc
