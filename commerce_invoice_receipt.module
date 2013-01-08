@@ -20,7 +20,7 @@ function commerce_invoice_receipt_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => 1,
     'parent' => 'admin/commerce/orders/%commerce_order',
-    'file' => 'commerce_invoice_receipt.admin.inc',
+    'file' => 'includes/commerce_invoice_receipt.admin.inc',
   );
   
   $items['admin/commerce/orders/%commerce_order/view/mail'] = array(
@@ -32,7 +32,7 @@ function commerce_invoice_receipt_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => 2,
     'parent' => 'admin/commerce/orders/%commerce_order',
-    'file' => 'commerce_invoice_receipt.admin.inc',
+    'file' => 'includes/commerce_invoice_receipt.admin.inc',
   );
   
   $items['user/%user/orders/%commerce_order/print'] = array(
@@ -43,7 +43,7 @@ function commerce_invoice_receipt_menu() {
     'access arguments' => array(3),
     'type' => MENU_LOCAL_TASK,
     'weight' => 2,
-    'file' => 'commerce_invoice_receipt.admin.inc',
+    'file' => 'includes/commerce_invoice_receipt.admin.inc',
   );
   
   $items['user/%user/orders/%commerce_order/view'] = array(
