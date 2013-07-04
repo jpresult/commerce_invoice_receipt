@@ -23,29 +23,8 @@ tr.even {
   font-weight: bold;
 }
 
-table {
-  width:100%;
-  border-spacing: 0;
-  font-size: 12px;
-}
-
 table.details td {
   padding: 0 5px;
-}
-
-table th {
-  background: #000;
-  color: #FFF;
-  text-align: left;
-  padding: 0;
-  text-transform: uppercase;
-  font-weight: bold;
-  border: 0;
-}
-
-table th,
-.products table td {
-  padding: 4px 5px;
 }
 
 .views-field-commerce-total,
@@ -58,8 +37,67 @@ table th,
   border-bottom: 1px dotted #CCC;
 }
 
-.products table.commerce-price-formatted-components {
-  width: 200px;
-  padding-top: 20px;
+/* DWM */
+
+table {
+  width:100%;
+  border-spacing:0;
+  font-size: 14px;
+  border-collapse:collapse;
+}
+
+table th {
+  background: #00A1E1;
+  color: #FFF;
+  text-align: left;
+  padding: 0;
+  text-transform: uppercase;
+  font-weight: bold;
+  border: 0;
+}
+
+table th,
+.products table td {
+  padding: 10px;
+}
+
+.line-items .views-field-line-item-title {
+  vertical-align: top;
+}
+
+.line-items .views-field-rendered-entity .entity-commerce-line-item > h2 {
+  display: none;
+}
+
+.line-items .views-field-rendered-entity .entity-commerce-line-item h2.field-label {
+  font-size: 14px;
+  margin: 0;
+  display: inline;
+}
+
+.line-items .views-field-rendered-entity .entity-commerce-line-item .field {
+  margin: 5px 0;
+}
+
+.line-items .views-field-rendered-entity .entity-commerce-line-item .field-items,
+.line-items .views-field-rendered-entity .entity-commerce-line-item .field-item {
+  display: inline;
+}
+
+.total table.commerce-price-formatted-components {
+  width: 100%;
   float: right;
 }
+
+.total table.commerce-price-formatted-components td{
+  padding: 10px;
+}
+
+.total td {
+  width: 75%;
+}
+.total td.price {
+  width:25%;
+}
+
+.footer { background-color: #00A1E1; color: #fff; padding: 1em; font-size: 0.9em; font-weight: bold; line-height: 1.6em; text-align: center;}
