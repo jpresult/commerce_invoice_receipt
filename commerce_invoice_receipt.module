@@ -90,7 +90,7 @@ function commerce_invoice_receipt_view_print($order, $view_mode = 'invoice', $br
   
   $html .= theme('commerce_order_invoice_view', array('info' => $invoice_info, 'order' => $order));
   
-  print _emogrifier_process($html, NULL, NULL, NULL, NULL, NULL);
+  print $html;
 }
 
 /**
@@ -239,9 +239,9 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
     'order_created' => $order->created,
     'order_number' => $order->order_number,
     'order_mail' => $order->mail,
-		'site_logo'	=> theme_get_setting('logo'),
+		'site_logo'	=> file_create_url(theme_get_setting('logo_path', 'dwm')),
   );
-  
+
   if (isset($build['commerce_order'][$order->order_id]['commerce_customer_shipping'])) {
     $info['customer_shipping'] = $build['commerce_order'][$order->order_id]['commerce_customer_shipping'][0]['#markup'];
   }
@@ -256,6 +256,10 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
   
   if (isset($build['commerce_order'][$order->order_id]['commerce_order_total'])) {
     $info['order_total'] = $build['commerce_order'][$order->order_id]['commerce_order_total'][0]['#markup'];
+  }
+
+  if (isset($build['commerce_order'][$order->order_id]['field_opmerkingen'])) {
+    $info['opmerkingen'] = $build['commerce_order'][$order->order_id]['field_opmerkingen'][0]['#markup'];
   }
   
   return $info;

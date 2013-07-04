@@ -39,6 +39,8 @@ table.details td {
 
 /* DWM */
 
+a { color: #fff; }
+
 table {
   width:100%;
   border-spacing:0;
@@ -61,12 +63,18 @@ table th,
   padding: 10px;
 }
 
+.remarks th { text-align: left; }
+
 .line-items .views-field-line-item-title {
   vertical-align: top;
 }
 
 .line-items .views-field-rendered-entity .entity-commerce-line-item > h2 {
   display: none;
+}
+
+.line-items .views-field-rendered-entity .entity-commerce-line-item .content {
+  display: table;
 }
 
 .line-items .views-field-rendered-entity .entity-commerce-line-item h2.field-label {
@@ -76,12 +84,12 @@ table th,
 }
 
 .line-items .views-field-rendered-entity .entity-commerce-line-item .field {
-  margin: 5px 0;
+  display: table-row;
 }
 
 .line-items .views-field-rendered-entity .entity-commerce-line-item .field-items,
-.line-items .views-field-rendered-entity .entity-commerce-line-item .field-item {
-  display: inline;
+.line-items .views-field-rendered-entity .entity-commerce-line-item .field-label {
+  display: table-cell;
 }
 
 .total table.commerce-price-formatted-components {
@@ -94,10 +102,10 @@ table th,
 }
 
 .total td {
-  width: 75%;
+  width: 70%;
 }
 .total td.price {
-  width:25%;
+  width:30%;
 }
 
 .footer { background-color: #00A1E1; color: #fff; padding: 1em; font-size: 0.9em; font-weight: bold; line-height: 1.6em; text-align: center;}

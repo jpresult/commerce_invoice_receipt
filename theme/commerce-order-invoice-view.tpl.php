@@ -32,30 +32,39 @@
                         <tr>
                           <td valign="top" width="50%">
                             <br/>
-                            <b><?php print t('Account No:'); ?></b> <?php print $info['order_uid']; ?><br/>
+                            <b><?php print t('Order Date'); ?></b> <?php print date('j F, Y', $info['order_created']); ?><br/>
                             <br/>
-                            <b><?php print t('Order Date:'); ?></b> <?php print date('j F, Y', $info['order_created']); ?><br/>
-                            <br/>
-                            <b><?php print t('Billing Address:'); ?></b><br />
+                            <b><?php print t('Billing Address'); ?></b><br />
                             <?php print isset($info['customer_billing']) ? $info['customer_billing'] : ''; ?><br />
                           </td>
                           <td valign="top" width="50%">
                             <br/>
-                            <b><?php print t('Web Order No:'); ?></b> <?php print $info['order_number']; ?><br/>
+                            <b><?php print t('Web Order No'); ?></b> <?php print $info['order_number']; ?><br/>
                             <br/>
-                            <b><?php print t('Email Address:'); ?></b> <?php print $info['order_mail']; ?><br/>
-                            <br/>
-                            <b><?php print t('Shipping Address:'); ?></b><br />
+                            <b><?php print t('Shipping Address'); ?></b><br />
                             <?php print isset($info['customer_shipping']) ? $info['customer_shipping'] : ''; ?><br />
                           </td>
                         </tr>
                       </table>
-
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
+            <?php if(isset($info['opmerkingen'])): ?>
+            <tr>
+              <td>
+                <table class="remarks">
+                  <tr><th><?php print t('Remarks') ?></th></tr>
+                  <tr>
+                    <td>
+                      <?php print $info['opmerkingen']; ?>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <?php endif; ?>
             <tr>
               <td>
                 <table class="products" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="font-family: verdana, arial, helvetica;">
@@ -63,8 +72,13 @@
                     <tr>
                       <td class="line-items"><?php print isset($info['line_items']) ? $info['line_items'] : ''; ?></td>
                     </tr>
+                  </tbody>
+                </table>
+                <table class="total" width="100%" border="0" cellspacing="0" cellpadding="1" align="center" style="font-family: verdana, arial, helvetica;">
+                  <tbody>
                     <tr>
-                      <td><?php print isset($info['order_total']) ? $info['order_total'] : ''; ?></td>
+                      <td>&nbsp;</td>
+                      <td class="price"><?php print isset($info['order_total']) ? $info['order_total'] : ''; ?></td>
                     </tr>
                   </tbody>
                 </table>
@@ -74,9 +88,10 @@
               <td>
                 <table>
                   <tr>
-                    <td colspan="2" style="background: #EEE; color: #666; padding: 1em; font-size: 0.9em; line-height: 1.6em; border-top: #CCC 1px dotted; text-align: center;">
+                    <td class="footer">
                       <!-- Invoice Header -->
-											[INSERT FOOTER]
+											+31 (0)26 319 5159 - <a href="mailto:info@drukwerkmax.nl">info@drukwerkmax.nl</a> - Geograaf 38 6921 EW Duiven<br />
+                      ABN AMRO: 43.48.94.109 - IBAN: NL45ABNA0434894109 - SWIFT: ABNANL2A - KvK: 56996721 - BTW: NL852395231B01
                     </td>
                   </tr>
                 </table>
