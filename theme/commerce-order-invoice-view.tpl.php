@@ -3,13 +3,13 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
   </head>
   <body>
-    <table width="100%" border="0" cellspacing="0" cellpadding="1" align="center" bgcolor="#CCC">
+    <table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
       <tr>
         <td>
-          <table width="100%" border="0" cellspacing="0" cellpadding="5" align="center" bgcolor="#FFF" style="font-family: verdana, arial, helvetica; font-size: 10px;">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5" align="center" bgcolor="#FFF" style="font-family: verdana, arial, helvetica;">
             <tr>
               <td>
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family: verdana, arial, helvetica; font-size: 11px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family: verdana, arial, helvetica;">
                   <tr>
                     <td nowrap="nowrap" style="line-height: 1.6em;" valign="middle">
 											<!-- Invoice Header -->
@@ -21,14 +21,14 @@
             </tr>
             <tr>
               <td>
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family: verdana, arial, helvetica; font-size: 11px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family: verdana, arial, helvetica;">
                   <tr>
                     <th colspan="2"><?php print t('Order Summary'); ?></th>
                   </tr>
                   <tr>
                     <td colspan="2">
 
-                      <table class="details" width="100%" cellspacing="0" cellpadding="0" style="font-family: verdana, arial, helvetica; font-size: 1em;">
+                      <table class="details" width="100%" cellspacing="0" cellpadding="0" style="font-family: verdana, arial, helvetica;">
                         <tr>
                           <td valign="top" width="50%">
                             <br/>
@@ -58,7 +58,7 @@
             </tr>
             <tr>
               <td>
-                <table class="products" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="font-family: verdana, arial, helvetica; font-size: 11px;">
+                <table class="products" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="font-family: verdana, arial, helvetica;">
                   <tbody>
                     <tr>
                       <td class="line-items"><?php print isset($info['line_items']) ? $info['line_items'] : ''; ?></td>
