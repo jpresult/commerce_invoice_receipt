@@ -32,7 +32,7 @@
                         <tr>
                           <td valign="top" width="50%">
                             <br/>
-                            <b><?php print t('Order Date'); ?></b> <?php print date('j F, Y', $info['order_created']); ?><br/>
+                            <b><?php print t('Order Date'); ?></b> <?php print $info['order_created']; ?><br/>
                             <br/>
                             <b><?php print t('Billing Address'); ?></b><br />
                             <?php print isset($info['customer_billing']) ? $info['customer_billing'] : ''; ?><br />
