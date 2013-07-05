@@ -39,6 +39,8 @@ table.details td {
 
 /* DWM */
 
+html, body { background-color: #fff; }
+
 a { color: #fff; }
 
 table {
