@@ -88,6 +88,9 @@ table th,
   display: table-cell;
 }
 
+.line-item-table table {
+  background-color: transparent;
+}
 .line-item-table tbody {
     border-top: none;
 }
