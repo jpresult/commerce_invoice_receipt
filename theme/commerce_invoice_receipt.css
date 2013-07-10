@@ -77,23 +77,30 @@ table th,
   display: none;
 }
 
-.line-items .views-field-rendered-entity .entity-commerce-line-item .content {
-  display: table;
-}
-
 .line-items .views-field-rendered-entity .entity-commerce-line-item h2.field-label {
   font-size: 14px;
   margin: 0;
   display: inline;
 }
 
-.line-items .views-field-rendered-entity .entity-commerce-line-item .field {
-  display: table-row;
-}
-
 .line-items .views-field-rendered-entity .entity-commerce-line-item .field-items,
 .line-items .views-field-rendered-entity .entity-commerce-line-item .field-label {
   display: table-cell;
+}
+
+.line-item-table tbody {
+    border-top: none;
+}
+.line-item-table .field-label {
+  color: #000;
+  padding: 0 10px 0 0;
+  font-weight: normal;
+  background-color: transparent;
+  text-transform: none;
+}
+.line-item-table .field-content {
+  color: #000;
+  padding: 0;
 }
 
 .total table.commerce-price-formatted-components {
