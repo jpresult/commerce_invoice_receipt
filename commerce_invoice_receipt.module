@@ -239,6 +239,7 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
     'order_created' => $order->created,
     'order_number' => $order->order_number,
     'order_mail' => $order->mail,
+    'order_status' => $order->status,
 		'site_logo'	=> theme_get_setting('logo'),
   );
   
