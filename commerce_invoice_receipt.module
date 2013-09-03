@@ -243,7 +243,7 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
 
   $info = array(
     'order_uid' => $order->uid,
-    'order_created' => format_date($results[0], 'short'),
+    'order_created' => format_date($results[0], 'custom', 'd-m-Y'),
     'order_number' => $order->order_number,
     'order_mail' => $order->mail,
 		'site_logo'	=> file_create_url(theme_get_setting('logo_path', 'dwm')),
