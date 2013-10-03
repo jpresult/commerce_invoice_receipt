@@ -256,6 +256,10 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
     $info['customer_billing'] = $build['commerce_order'][$order->order_id]['commerce_customer_billing'][0]['#markup'];
   }
   
+  if (isset($build['commerce_order'][$order->order_id]['commerce_customer_eu_vat_rc'][0]['#markup'])) {
+    $info['eu_vat_rc'] = strtoupper($build['commerce_order'][$order->order_id]['commerce_customer_eu_vat_rc'][0]['#markup']);
+  }
+
   if (isset($build['commerce_order'][$order->order_id]['commerce_line_items'])) {
     $info['line_items'] = $build['commerce_order'][$order->order_id]['commerce_line_items'][0]['#markup'];
   }

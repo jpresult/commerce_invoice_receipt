@@ -36,6 +36,8 @@
                             <br/>
                             <b><?php print t('Billing Address'); ?></b><br />
                             <?php print isset($info['customer_billing']) ? $info['customer_billing'] : ''; ?><br />
+                            <b><?php print t('BTW Gegevens'); ?></b><br />
+                            <?php print isset($info['eu_vat_rc']) ? $info['eu_vat_rc'] : ''; ?><br />
                           </td>
                           <td valign="top" width="50%">
                             <br/>
