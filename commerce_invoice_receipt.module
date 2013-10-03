@@ -234,7 +234,6 @@ function commerce_invoice_receipt_action_mail($order, $to, $subject, $from = NUL
  * Generate an array for rendering all the invoice info.
  */
 function _commerce_invoice_receipt_get_invoice_info($order, $build) {
-
   $results = db_select("commerce_order_revision", "cor")
     ->condition("order_id", $order->order_number)
     ->condition("status", "checkout_complete")
@@ -246,7 +245,7 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
     'order_created' => format_date($results[0], 'custom', 'd-m-Y'),
     'order_number' => $order->order_number,
     'order_mail' => $order->mail,
-		'site_logo'	=> file_create_url(theme_get_setting('logo_path', 'dwm')),
+    'site_logo'	=> file_create_url(theme_get_setting('logo_path', 'dwm')),
   );
 
   if (isset($build['commerce_order'][$order->order_id]['commerce_customer_shipping'])) {
