@@ -74,7 +74,8 @@ table th,
 }
 
 .line-items .views-field-rendered-entity .entity-commerce-line-item > h2 {
-  display: none;
+  font-size: 18px;
+  margin: 0;
 }
 
 .line-items .views-field-rendered-entity .entity-commerce-line-item h2.field-label {
