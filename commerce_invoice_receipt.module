@@ -237,6 +237,7 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
   $info = array(
     'order_uid' => $order->uid,
     'order_created' => $order->created,
+    'order_changed' => $order->changed,
     'order_number' => $order->order_number,
     'order_mail' => $order->mail,
     'order_status' => $order->status,
