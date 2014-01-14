@@ -36,7 +36,7 @@
                             <br/>
                             <b><?php print t('Billing Address'); ?></b><br />
                             <?php print isset($info['customer_billing']) ? $info['customer_billing'] : ''; ?><br />
-                            <b><?php print t('BTW Gegevens'); ?></b> 
+                            <b><?php print t('BTW Gegevens'); ?></b>
                             <div style="margin-top: -18px; padding-left: 125px;">
                                 <?php print isset($info['eu_vat_rc']) ? $info['eu_vat_rc'] : ''; ?>
                             </div>
@@ -94,8 +94,8 @@
                   <tr>
                     <td class="footer">
                       <!-- Invoice Header -->
-											+31 (0)26 319 5159 - <a href="mailto:info@drukwerkmax.nl">info@drukwerkmax.nl</a> - Geograaf 38 6921 EW Duiven<br />
-                      ABN AMRO: 43.48.94.109 - IBAN: NL45ABNA0434894109 - SWIFT: ABNANL2A - KvK: 56996721 - BTW: NL852395231B01
+											+31 (0)85 210 4000 - <a href="mailto:info@drukwerkmax.nl">info@drukwerkmax.nl</a> - Geograaf 38 6921 EW Duiven<br />
+                      ABN AMRO IBAN: NL53ABNA0413904814 - SWIFT: ABNANL2A - KvK: 56996721 - BTW: NL852395231B01
                     </td>
                   </tr>
                 </table>
