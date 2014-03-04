@@ -248,6 +248,10 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
     'site_logo'	=> file_create_url(theme_get_setting('logo_path', 'dwm')),
   );
 
+  if (isset($build['commerce_order'][$order->order_id]['field_kenmerk'])) {
+    $info['kenmerk'] = $build['commerce_order'][$order->order_id]['field_kenmerk'][0]['#markup'];
+  }
+
   if (isset($build['commerce_order'][$order->order_id]['commerce_customer_shipping'])) {
     $info['customer_shipping'] = $build['commerce_order'][$order->order_id]['commerce_customer_shipping'][0]['#markup'];
   }
@@ -271,6 +275,6 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
   if (isset($build['commerce_order'][$order->order_id]['field_opmerkingen'])) {
     $info['opmerkingen'] = $build['commerce_order'][$order->order_id]['field_opmerkingen'][0]['#markup'];
   }
-  
+
   return $info;
 }

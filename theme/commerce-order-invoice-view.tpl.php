@@ -43,6 +43,8 @@
                           </td>
                           <td valign="top" width="50%">
                             <br/>
+                            <b><?php print t('Your reference'); ?></b> <?php print $info['kenmerk']; ?><br/>
+                            <br/>
                             <b><?php print t('Web Order No'); ?></b> <?php print $info['order_number']; ?><br/>
                             <br/>
                             <b><?php print t('Shipping Address'); ?></b><br />
