@@ -211,7 +211,7 @@ function commerce_invoice_receipt_action_mail($order, $to, $subject, $from = NUL
   $from = !empty($from) ? str_replace(array("\r", "\n"), '', $from) : NULL;
   
   $recipients = explode(',', $to);
-  
+
   $params = array(
     'subject' => $subject,
     'order' => $order,
@@ -274,6 +274,10 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
 
   if (isset($build['commerce_order'][$order->order_id]['field_opmerkingen'])) {
     $info['opmerkingen'] = $build['commerce_order'][$order->order_id]['field_opmerkingen'][0]['#markup'];
+  }
+
+  if ($order->data['payment_method'] == 'deferred|commerce_payment_deferred') {
+    $info['deferred'] = t('The term of payment for this invoice is 14 days. The payment deadline is !date.', array('!date' => format_date(REQUEST_TIME + 1209600, 'custom', 'd-m-Y')));
   }
 
   return $info;

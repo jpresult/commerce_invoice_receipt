@@ -94,6 +94,11 @@
               <td>
                 <table>
                   <tr>
+                    <td>
+                      <?php print isset($info['deferred']) ? $info['deferred'] : ''; ?>
+                    </td>
+                  </tr>
+                  <tr>
                     <td class="footer">
                       <!-- Invoice Header -->
 											+31 (0)85 210 4000 - <a href="mailto:info@drukwerkmax.nl">info@drukwerkmax.nl</a> - Geograaf 38 6921 EW Duiven<br />
