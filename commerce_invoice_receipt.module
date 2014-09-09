@@ -10,7 +10,7 @@
  */
 function commerce_invoice_receipt_menu() {
   $items = array();
-  
+
   $items['admin/commerce/orders/%commerce_order/view/print'] = array(
     'title' => 'Print',
     'page callback' => 'commerce_invoice_receipt_view_print',
@@ -22,7 +22,7 @@ function commerce_invoice_receipt_menu() {
     'parent' => 'admin/commerce/orders/%commerce_order',
     'file' => 'includes/commerce_invoice_receipt.admin.inc',
   );
-  
+
   $items['admin/commerce/orders/%commerce_order/view/mail'] = array(
     'title' => 'Email',
     'page callback' => 'drupal_get_form',
@@ -34,7 +34,31 @@ function commerce_invoice_receipt_menu() {
     'parent' => 'admin/commerce/orders/%commerce_order',
     'file' => 'includes/commerce_invoice_receipt.admin.inc',
   );
-  
+
+  $items['admin/commerce/orders/%commerce_order/edit/print'] = array(
+    'title' => 'Print',
+    'page callback' => 'commerce_invoice_receipt_view_print',
+    'page arguments' => array(3),
+    'access callback' => 'commerce_order_access',
+    'access arguments' => array('view', 3),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
+    'parent' => 'admin/commerce/orders/%commerce_order',
+    'file' => 'includes/commerce_invoice_receipt.admin.inc',
+  );
+
+  $items['admin/commerce/orders/%commerce_order/edit/mail'] = array(
+    'title' => 'Email',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('commerce_invoice_receipt_mail_form', 3),
+    'access callback' => 'commerce_order_access',
+    'access arguments' => array('view', 3),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+    'parent' => 'admin/commerce/orders/%commerce_order',
+    'file' => 'includes/commerce_invoice_receipt.admin.inc',
+  );
+
   $items['user/%user/orders/%commerce_order/print'] = array(
     'title' => 'Printable Invoice',
     'page callback' => 'commerce_invoice_receipt_view_print',
@@ -45,13 +69,13 @@ function commerce_invoice_receipt_menu() {
     'weight' => 2,
     'file' => 'includes/commerce_invoice_receipt.admin.inc',
   );
-  
+
   $items['user/%user/orders/%commerce_order/view'] = array(
     'title' => 'View',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => 1,
   );
-  
+
   return $items;
 }
 
@@ -59,11 +83,11 @@ function commerce_invoice_reciept_css_path() {
   // Get current default theme
   $default_theme_path = drupal_get_path('theme', variable_get('theme_default', NULL));
   $default_template_css = drupal_get_path('module', 'commerce_invoice_receipt') . '/theme/commerce_invoice_receipt.css';
-  
+
   // Check commerce_invoice_receipt.css is in the current theme
-  if (file_exists($default_theme_path . '/invoice/commerce_invoice_receipt.css')) {    
+  if (file_exists($default_theme_path . '/invoice/commerce_invoice_receipt.css')) {
    $default_template_css = $default_theme_path . '/invoice/commerce_invoice_receipt.css';
-  } 
+  }
   elseif (file_exists($default_theme_path . '/css/commerce_invoice_receipt.css')) {
    $default_template_css = $default_theme_path . '/css/commerce_invoice_receipt.css';
   }
@@ -71,7 +95,7 @@ function commerce_invoice_reciept_css_path() {
 }
 
 function commerce_invoice_receipt_view_print($order, $view_mode = 'invoice', $breadcrumb = TRUE) {
-  
+
   $styles[] = array(
     'type' => 'file',
     'media' => 'all',
@@ -83,13 +107,13 @@ function commerce_invoice_receipt_view_print($order, $view_mode = 'invoice', $br
     'browsers' => array(),
   );
   $html = drupal_get_css($styles);
-  
+
   $build = entity_view('commerce_order', array($order->order_id => $order), $view_mode, NULL, TRUE);
-  
+
   $invoice_info = _commerce_invoice_receipt_get_invoice_info($order, $build);
-  
+
   $html .= theme('commerce_order_invoice_view', array('info' => $invoice_info, 'order' => $order));
-  
+
   print _emogrifier_process($html, NULL, NULL, NULL, NULL, NULL);
 }
 
@@ -112,9 +136,9 @@ function commerce_invoice_receipt_theme() {
   $default_template_path = drupal_get_path('module', 'commerce_invoice_receipt') . '/theme';
 
   // Check commerce-order-invoice-view.tpl.php is in the current theme
-  if (file_exists($default_theme_path . '/invoice/commerce-order-invoice-view.tpl.php')) { 
+  if (file_exists($default_theme_path . '/invoice/commerce-order-invoice-view.tpl.php')) {
     $default_template_path = $default_theme_path . '/invoice/';
-  } 
+  }
   elseif (file_exists($default_theme_path . '/templates/commerce-order-invoice-view.tpl.php')) {
     $default_template_path = $default_theme_path . '/templates/';
   }
@@ -136,10 +160,10 @@ function commerce_invoice_receipt_mail($key, &$message, $params) {
     'langcode' => $langcode,
     'context' => '',
   );
-  
+
   switch ($key) {
     // Setup an e-mailed invoice.
-    case 'invoice':  
+    case 'invoice':
       $styles[] = array(
         'type' => 'file',
         'media' => 'all',
@@ -151,15 +175,15 @@ function commerce_invoice_receipt_mail($key, &$message, $params) {
         'browsers' => array(),
       );
       $html = drupal_get_css($styles);
-      
+
       $build = entity_view('commerce_order', array($params['order']->order_id => $params['order']), 'invoice', NULL, TRUE);
       $invoice_info = _commerce_invoice_receipt_get_invoice_info($params['order'], $build);
-      
+
       $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed;';
       $message['subject'] = isset($params['subject']) ? $params['subject'] : t('Your Order Invoice', array(), $options);
-      
+
       $html .= theme('commerce_order_invoice_view', array('info' => $invoice_info, 'order' => $params['order']));
-      
+
       $message['body'][] = _emogrifier_process($html, NULL, NULL, NULL, NULL, NULL);
       break;
   }
@@ -209,21 +233,21 @@ function commerce_invoice_receipt_rules_action_info() {
 function commerce_invoice_receipt_action_mail($order, $to, $subject, $from = NULL) {
   $to = str_replace(array("\r", "\n"), '', $to);
   $from = !empty($from) ? str_replace(array("\r", "\n"), '', $from) : NULL;
-  
+
   $recipients = explode(',', $to);
-  
+
   $params = array(
     'subject' => $subject,
     'order' => $order,
   );
-  
+
   $account = user_load($order->uid);
   $language = user_preferred_language($account);
-  
+
   foreach ($recipients as $recipient) {
     if ($recipient == '') continue;
     $message = drupal_mail('commerce_invoice_receipt', 'invoice', $recipient, $language, $params, $from);
-    
+
     if ($message['result']) {
       watchdog('rules', 'Successfully sent email to %recipient', array('%recipient' => $recipient));
     }
@@ -243,22 +267,22 @@ function _commerce_invoice_receipt_get_invoice_info($order, $build) {
     'order_status' => $order->status,
     'site_logo'	=> theme_get_setting('logo'),
   );
-  
+
   if (isset($build['commerce_order'][$order->order_id]['commerce_customer_shipping'])) {
     $info['customer_shipping'] = $build['commerce_order'][$order->order_id]['commerce_customer_shipping'][0]['#markup'];
   }
-  
+
   if (isset($build['commerce_order'][$order->order_id]['commerce_customer_billing'][0]['#markup'])) {
     $info['customer_billing'] = $build['commerce_order'][$order->order_id]['commerce_customer_billing'][0]['#markup'];
   }
-  
+
   if (isset($build['commerce_order'][$order->order_id]['commerce_line_items'])) {
     $info['line_items'] = $build['commerce_order'][$order->order_id]['commerce_line_items'][0]['#markup'];
   }
-  
+
   if (isset($build['commerce_order'][$order->order_id]['commerce_order_total'])) {
     $info['order_total'] = $build['commerce_order'][$order->order_id]['commerce_order_total'][0]['#markup'];
   }
-  
+
   return $info;
 }
