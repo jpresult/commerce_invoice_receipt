@@ -12,13 +12,13 @@ function commerce_invoice_receipt_mail_form($form_state, $order) {
     '#type' => 'hidden',
     '#value' => $order['build_info']['args'][0]->order_id,
   );
-  
+
   $form['email'] = array(
     '#type' => 'textfield',
     '#title' => t('Recipient e-mail address'),
     '#default_value' => $order['build_info']['args'][0]->mail,
   );
-  
+
   $form['submit' ] = array(
     '#type' => 'submit',
     '#value' => t('Email invoice'),
@@ -44,22 +44,29 @@ function commerce_invoice_receipt_mail_form_validate($form, &$form_state) {
  */
 function commerce_invoice_receipt_mail_form_submit($form, &$form_state) {
   $order = commerce_order_load($form_state['values']['order_id']);
-  
+
   if ($order === FALSE) {
     drupal_set_message(t('Order @order_id does not exist.', array('@order_id' => $form_state['values']['order_id'])));
     drupal_goto('admin/commerce/orders');
   }
-  
+
   $recipient = check_plain($form_state['values']['email']);
-  
+
   $params = array('order' => $order);
   $from_email = variable_get('site_mail', '');
-  
+
+  if ($copy_all = variable_get('commerce_invoice_copy_all_user', '')) {
+    $method = variable_get('commerce_invoice_copy_all_method', 'Bcc');
+    $params['headers'] = array(
+      $method => $copy_all,
+    );
+  }
+
   $account = user_load($order->uid);
   $language = user_preferred_language($account);
-  
+
   $sent = drupal_mail('commerce_invoice_receipt', 'invoice', $recipient, $language, $params, $from_email);
-  
+
   if (!$sent) {
     drupal_set_message(t('E-mail failed.'));
   }
@@ -86,7 +93,7 @@ class InvoiceMailSystem implements MailSystemInterface {
     $message['body'] = implode("\n\n", $message['body']);
     return $message;
   }
-  
+
   /**
    * Send an e-mail message, using Drupal variables and default settings.
    *
