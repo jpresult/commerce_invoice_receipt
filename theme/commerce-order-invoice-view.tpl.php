@@ -44,9 +44,11 @@
                             <b><?php print t('Web Order No:'); ?></b> <?php print $info['order_number']; ?><br/>
                             <br/>
                             <b><?php print t('Email Address:'); ?></b> <?php print $info['order_mail']; ?><br/>
+                            <?php if (isset($info['customer_shipping']) && !empty($info['customer_shipping'])): ?>
                             <br/>
                             <b><?php print t('Shipping Address:'); ?></b><br />
-                            <?php print isset($info['customer_shipping']) ? $info['customer_shipping'] : ''; ?><br />
+                            <?php print $info['customer_shipping']; ?><br />
+                            <?php endif; ?>
                           </td>
                         </tr>
                       </table>
