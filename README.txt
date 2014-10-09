@@ -44,6 +44,14 @@ INSTALLATION
     you'll find an action called 'Send invoice receipt email' under Commerce
     Order that you can use.
 
+OVERRIDDING THE INVOICE TEMPLATE
+--------------------------------
+
+If you want to customize the invoice template, copy one or both of these files:
+- theme/commerce-order-invoice-view.tpl.php
+- theme/commerce_invoice_receipt.css
+Paste them anywhere in your theme and edit per your requirements.
+
 KNOWN ISSUES
 ------------
 
