@@ -77,8 +77,11 @@
                 <table>
                   <tr>
                     <td colspan="2" style="background: #EEE; color: #666; padding: 1em; font-size: 0.9em; line-height: 1.6em; border-top: #CCC 1px dotted; text-align: center;">
-                      <!-- Invoice Header -->
-											[INSERT FOOTER]
+                      <!-- Invoice Footer -->
+											<a href="<?php print url('<front>', array('absolute' => TRUE)); ?>" target="_blank">
+                        <?php print variable_get('site_name', NULL); ?>
+                      </a><br>
+                      <?php print variable_get('site_mail', NULL); ?>
                     </td>
                   </tr>
                 </table>
