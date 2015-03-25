@@ -4,6 +4,7 @@ package = "Commerce (contrib)"
 dependencies[] = commerce
 dependencies[] = commerce_order
 dependencies[] = emogrifier
+configure = admin/commerce/config/commerce_invoice_receipt
 core = 7.x
 
 files[] = includes/commerce_invoice_receipt.admin.inc
