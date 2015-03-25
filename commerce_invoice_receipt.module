@@ -197,13 +197,23 @@ function commerce_invoice_receipt_theme() {
   $default_theme_path = drupal_get_path('theme', variable_get('theme_default', NULL));
   $default_template_path = drupal_get_path('module', 'commerce_invoice_receipt') . '/theme';
 
-  // Check commerce-order-invoice-view.tpl.php is in the current theme
-  if (file_exists($default_theme_path . '/invoice/commerce-order-invoice-view.tpl.php')) {
-    $default_template_path = $default_theme_path . '/invoice/';
+  // Check if the template has been copied in the front end theme.
+  //
+  // A manual check is necessary because otherwise Drupal will not find the
+  // template override in the front end theme, when the site uses an admin theme
+  // (e.g. when an administrator tries to see printable invoice from the back
+  // end).
+  //
+  // This way the template will always be fetched from the front end theme if
+  // there is one.
+  //
+  // Also, this way the template file can be located anywhere in the front end
+  // theme (root, templates/, invoice/, or any other subfolder).
+  $files = file_scan_directory($default_theme_path, '/commerce-order-invoice-view.tpl.php$/');
+  if (count($files)) {
+    $default_template_path = $default_theme_path;
   }
-  elseif (file_exists($default_theme_path . '/templates/commerce-order-invoice-view.tpl.php')) {
-    $default_template_path = $default_theme_path . '/templates/';
-  }
+
   return array(
     'commerce_order_invoice_view' => array(
       'variables' => array('info' => NULL, 'order' => NULL),
