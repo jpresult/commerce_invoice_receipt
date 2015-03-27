@@ -68,10 +68,10 @@ function commerce_invoice_receipt_mail_form_submit($form, &$form_state) {
   $sent = drupal_mail('commerce_invoice_receipt', 'invoice', $recipient, $language, $params, $from_email);
 
   if (!$sent) {
-    drupal_set_message(t('E-mail failed.'));
+    drupal_set_message(t('Sending email failed. Please check the error log for more details.'), 'error');
   }
   else {
-    $message = t('Invoice e-mailed to @email.', array('@email' => $recipient));
+    $message = t('Invoice emailed to @email.', array('@email' => $recipient));
     drupal_set_message($message);
   }
 }
