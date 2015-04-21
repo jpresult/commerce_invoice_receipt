@@ -124,6 +124,11 @@ function commerce_invoice_receipt_theme() {
       'path' => $default_template_path,
       'template' => 'commerce-order-invoice-view',
     ),
+    'commerce_order_ticket_view' => array(
+      'variables' => array('info' => NULL, 'order' => NULL),
+      'path' => $default_template_path,
+      'template' => 'commerce-order-ticket-view',
+    ),
   );
 }
 
