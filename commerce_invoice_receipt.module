@@ -220,8 +220,8 @@ function commerce_invoice_receipt_rules_action_info() {
  */
 function commerce_invoice_receipt_get_templates($element, $name = NULL) {
   return array(
-    'commerce_order_invoice_view',
-    'commerce_order_ticket_view',
+    'commerce_order_invoice_view' => t('Invoice view'),
+    'commerce_order_ticket_view' => t('Ticket view'),
   );
 }
 
